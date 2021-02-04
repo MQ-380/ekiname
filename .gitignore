@@ -1,0 +1,70 @@
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.zip
+*dist/
+
+*node_modules/
+*.sass-cache/
+
+dist/
+rev/
+
+
+.tower/
+### JetBrains IDEs
+
+*.iml
+
+## Directory-based project format:
+.idea/
+
+*.idea/
+
+## File-based project format:
+*.ipr
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+
+# Eclipse IDEs
+.DS_Store
+
+# VIM IDEs
+*.swp
+
+# VS IDES
+*.sln
+*.suo
+*.un~
+.vscode/
+
+logs/
+*logs/
+
+
+# sourceMap
+*.map
+
+
+release/
+public/dest/
+mark.md
+__temp__
