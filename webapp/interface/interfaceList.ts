@@ -7,3 +7,8 @@ export interface StationName {
     stationName: String,
     hasChecked: false,
 }
+
+export interface CountDown {
+    minutes: number,
+    second: number,
+}

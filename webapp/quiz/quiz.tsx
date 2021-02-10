@@ -2,13 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { City, StationName } from '../interface/interfaceList';
 import { cityStateContext } from '../CityContextWrapper/CityContextWrapper';
 import { cityList } from '../data/cityList';
-import { debounce } from '../Utils/commonUtils';
+import { CountDown } from '../CountDown/CountDown';
 
 export default function Quiz(props:any){
     let city = useContext(cityStateContext);
     let [ nowAnswer, setNowAnswer ] = useState('');
     let [ allStationInfo, setAllStationInfo ] = useState([]);
     let [ answeredNumber, setAnsweredNumber ] = useState(0); 
+    let [ isTimeOut, setIsTimeOut ] = useState(false);
+    let countDownTimeout = function() {
+        setIsTimeOut(true);
+    }
 
     useEffect(() => {
         getStationInfo(cityList[city.id]).then((res) => {
@@ -28,16 +32,19 @@ export default function Quiz(props:any){
             setAllStationInfo(tempInfo);
         }
     }, [nowAnswer]);
-
+    console.log(isTimeOut);
     return (
     <div className='full_wrapper'>
         <div className='put_in_wrapper'>
-            <input onChange={(e) => setNowAnswer(e.target.value)} value={nowAnswer}></input>
+            <input onChange={(e) => setNowAnswer(e.target.value)} value={nowAnswer} disabled={isTimeOut}></input>
             <div className='confirm'></div>
         </div>
         <div className='result'>
             {`${answeredNumber} / ${allStationInfo.length}`}
             {/*CountDown*/}
+        </div>
+        <div className='count_down'>
+            <CountDown countDownInfo={{second: 10}} timeOut={countDownTimeout}/>
         </div>
         <div className='answer_wrapper'>
             {allStationInfo.map((item, index) => (
