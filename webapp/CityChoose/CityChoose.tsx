@@ -15,8 +15,6 @@ export default function CityChoose(props: any) {
         </div>
     )
 
-
-
     function chooseCity(e: any, ele: String) {
         changeCityDispatch({name: ele});
     }
