@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState, useRef } from 'react';
 import { StationName } from '../interface/interfaceList';
 import { cityStateContext } from '../CityContextWrapper/CityContextWrapper';
 import { CountDown } from '../CountDown/CountDown';
@@ -8,18 +8,27 @@ export default function Quiz(props:any){
     let [ nowAnswer, setNowAnswer ] = useState('');
     let [ allStationInfo, setAllStationInfo ] = useState([]);
     let [ answeredNumber, setAnsweredNumber ] = useState(0); 
-    let [ isTimeOut, setIsTimeOut ] = useState(false);
-    let countDownTimeout = function() {
-        setIsTimeOut(true);
-    }
+    let [ leftTime, setLeftTime ] = useState(120);
+    let [ renewCountDown, setRenewCountDown ] = useState(true);
+    let timeInterval = useRef(null);
 
     useEffect(() => {
         getStationInfo(city.name).then((res) => {
             setAllStationInfo(res);
             setAnsweredNumber(0);
-            setIsTimeOut(false);
+            //clearInterval(timeInterval.current);
+            setLeftTime(120);
         });
     }, [city]);
+
+    useEffect(()=>{
+        clearTimeout(timeInterval.current);
+        timeInterval.current = leftTime > 0 ? setTimeout(()=> {
+
+        console.log(leftTime);
+            setLeftTime(e => e - 1) 
+        }, 1000) :  null;
+    }, [leftTime])
 
     useEffect(() => {
         if(!nowAnswer) return;
@@ -31,13 +40,14 @@ export default function Quiz(props:any){
             setNowAnswer('');
             setAnsweredNumber(e => e+1);
             setAllStationInfo(tempInfo);
+            setRenewCountDown(true);
         }
     }, [nowAnswer]);
 
     return (
     <div className='full_wrapper'>
         <div className='put_in_wrapper'>
-            <input onChange={(e) => setNowAnswer(e.target.value)} value={nowAnswer} disabled={isTimeOut}></input>
+            <input onChange={(e) => setNowAnswer(e.target.value)} value={nowAnswer} disabled={leftTime===0}></input>
             <div className='confirm'></div>
         </div>
         <div className='result'>
@@ -45,7 +55,7 @@ export default function Quiz(props:any){
             {/*CountDown*/}
         </div>
         <div className='count_down'>
-            <CountDown countDownInfo={{second: 10}} timeOut={countDownTimeout}/>
+            <CountDown countDownInfo={{second: leftTime}} setRenewCountDown={setRenewCountDown} renewCountDown={renewCountDown}/>
         </div>
         <div className='answer_wrapper'>
             {allStationInfo.map((item, index) => (
