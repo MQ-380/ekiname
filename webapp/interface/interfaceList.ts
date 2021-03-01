@@ -1,6 +1,6 @@
 export interface City {
     name: String,
-    id: number,
+    //id: number,
 };
 
 export interface StationName {
@@ -11,4 +11,8 @@ export interface StationName {
 export interface CountDown {
     minutes: number,
     second: number,
+}
+
+export type CityProviderDispatchType = {
+    changeCityDispatch: (city: City) => void
 }

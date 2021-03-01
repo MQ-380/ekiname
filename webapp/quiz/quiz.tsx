@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { City, StationName } from '../interface/interfaceList';
+import { StationName } from '../interface/interfaceList';
 import { cityStateContext } from '../CityContextWrapper/CityContextWrapper';
-import { cityList } from '../data/cityList';
 import { CountDown } from '../CountDown/CountDown';
 
 export default function Quiz(props:any){
@@ -15,10 +14,12 @@ export default function Quiz(props:any){
     }
 
     useEffect(() => {
-        getStationInfo(cityList[city.id]).then((res) => {
+        getStationInfo(city.name).then((res) => {
             setAllStationInfo(res);
+            setAnsweredNumber(0);
+            setIsTimeOut(false);
         });
-    }, []);
+    }, [city]);
 
     useEffect(() => {
         if(!nowAnswer) return;
@@ -32,7 +33,7 @@ export default function Quiz(props:any){
             setAllStationInfo(tempInfo);
         }
     }, [nowAnswer]);
-    console.log(isTimeOut);
+
     return (
     <div className='full_wrapper'>
         <div className='put_in_wrapper'>
@@ -57,19 +58,18 @@ export default function Quiz(props:any){
 }
 
 
-function getStationInfo(cityName: String) : Promise<any> {
+async function getStationInfo(cityName: String) : Promise<any> {
     let allStationInfo: Array<StationName> = [];
-    return fetch(`../${cityName}.json`).then((res)=>{
-        try{
-            return res.json().then((data: Array<String>) => {
-                return data.map((item) => ({
-                    stationName: item,
-                    hasChecked: false,
-                }));
-            }).catch(e => console.error(e));
-        } catch (e) {
-            console.error(e);
-        }
-    });
+    const res = await fetch(`../${cityName}.json`);
+    try {
+        return res.json().then((data: Array<String>) => {
+            return data.map((item) => ({
+                stationName: item,
+                hasChecked: false,
+            }));
+        }).catch(e => console.error(e));
+    } catch (e_1) {
+        console.error(e_1);
+    }
 }
 

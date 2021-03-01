@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CountDown } from '../interface/interfaceList';
 
-export function CountDown(props) {
+export function CountDown(props: any) {
     let [minutes, setMinutes] = useState(-1);
     let [seconds, setSeconds] = useState(-1);
     let timeoutHandler = null;
